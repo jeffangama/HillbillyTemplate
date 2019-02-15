@@ -6,8 +6,8 @@
   @author Mark Rackley / http://www.markrackley.net / mrackley@paitgroup.com, editer by Jeff ANGAMA https://twitter/jeffangama
 
  #OBjective 
-
- ...
+* Customize new form / edit / view form easily. Add bootstrap, jquery to it.
+* When using that project vs jslink ? When you want to set field value or customize a form to be prettier
 
  # Installation 
  1. git clone https://github.com/seaSide974/gulpsynchLocalToRemote to get a gulp task that push html css js to style library. Configure it. Create a folder in src : style library and a subfolder "yourappname". 
@@ -27,9 +27,7 @@
              alertErrorText: "<message>" // - What message do you want to display to the users if there is a SharePoint form error on submit
          });
  		
-    });
- 
- 
+    }); 
  
  # Additional Documentation for version 2:
    
