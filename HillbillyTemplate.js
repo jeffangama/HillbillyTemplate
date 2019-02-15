@@ -1,6 +1,10 @@
 /*
  * HillbillyTemplate - Customize SharePoint 2013/2016/O365 classic forms
- * Version 2.0 
+ * Version 3.0 
+ * V3 Changelog by JEFF ANGAMA
+ *      Scroll to errors area. remove popup alert
+ *      Use internalName instead of displayName for the html template
+ *      Grab the field description, avoiding typing in the template the fields names
  * @requires jQuery v1.7 or greater 
  * @requires unslider 
  *
@@ -50,25 +54,57 @@
             moveSaveCancel: false,
             alertErrorText: "Form errors exist. Please fix form errors and try again"
         }, options);
-                
-        //loop through all the spans in the custom layout        
-        $("span.hillbillyForm").each(function()
+               
+        $("span.hillbillyFormDesc").each(function()
         {
             //get the display name from the custom layout
-            displayName = $(this).attr("data-displayName");
+            displayName = $(this).attr("data-internalName");
             elem = $(this);
             //find the corresponding field from the default form and move it
             //into the custom layout
             $("table.ms-formtable td").each(function(){
-                if (this.innerHTML.indexOf('FieldName="'+displayName+'"') != -1){
-                    $(this).contents().appendTo(elem);
+                if (this.innerHTML.indexOf('FieldInternalName="'+displayName+'"') != -1){
+                    $(this).prev().contents().appendTo(elem);
                 }
             });
         });
+
+        //loop through all the spans in the custom layout        
+        $("span.hillbillyForm").each(function()
+        {
+            //get the display name from the custom layout
+            displayName = $(this).attr("data-internalName");
+            elem = $(this);
+            //find the corresponding field from the default form and move it
+            //into the custom layout
+            $("table.ms-formtable td").each(function(){
+                if (this.innerHTML.indexOf('FieldInternalName="'+displayName+'"') != -1){
+                    $(this).contents().appendTo(elem);
+                    $(this).parent().remove();
+                }
+            });
+        });
+
+        //loop through all the spans in the custom layout        
+        $("span.hillbillyFormAll").each(function()
+        {
+            //get the display name from the custom layout
+            displayName = $(this).attr("data-internalName");
+            elem = $(this);
+            //find the corresponding field from the default form and move it
+            //into the custom layout
+            $("table.ms-formtable td").each(function(){
+                if (this.innerHTML.indexOf('FieldInternalName="'+displayName+'"') != -1){
+                    $(this).parentsUntil('tbody').contents().appendTo(elem);
+                    //$(this).parent().remove();
+                }
+            });
+        });
+        
        
         if($("span.hillbillyFormCancel").length)
         {
-        	$("input[type='button'][value='Cancel']").hide();
+        	//$("input[type='button'][value='Cancel']").hide();
         	var cancel = $("input[type='button'][value='Cancel']")[0];
 	        $("span.hillbillyFormCancel").append($(cancel ));
 	        $(cancel).show();
@@ -76,10 +112,22 @@
 
         if($("span.hillbillyFormSave").length)
         {
-	        $("input[type='button'][value='Save']").hide();;	        
+	        //$("input[type='button'][value='Save']").hide();;	        
 	        var save = $("input[type='button'][value='Save']")[0];
 	        $("span.hillbillyFormSave").append($(save));
 	        $(save).show();
+        }
+
+        if($("span.CreatedInformation")){
+            $("td[id='onetidinfoblock1']").hide();    
+            $("span.CreatedInformation").append($("td[id='onetidinfoblock1']"));
+            $("td[id='onetidinfoblock1']").show();
+        }
+
+        if($("span.ModifiedInformation")){
+            $("td[id='onetidinfoblock2']").hide();;	        
+            $("span.ModifiedInformation").append($("td[id='onetidinfoblock2']"));
+            $("td[id='onetidinfoblock2']").show();
         }
         
         if(opt.genericAlert)
@@ -94,8 +142,13 @@
 	{
 		if($("span[role='alert']").length)
 		{
-			alert(alertErrorText);
-			 clearInterval(interval);
+            //alert(alertErrorText);
+            $('#accordion > div').show();
+            clearInterval(interval);
+            
+            $('html, body').animate({
+                scrollTop: $("span[role='alert']").offset().top
+            }, 2000);
 		}
 	}
 	
