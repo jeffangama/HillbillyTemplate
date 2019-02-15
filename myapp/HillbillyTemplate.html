@@ -1,0 +1,32 @@
+<script type="text/javascript">
+    function addScript(src) {
+        var s = document.createElement('script');
+        s.setAttribute('src', src);
+        document.body.appendChild(s);
+    }
+
+    function getTodayDate() { // Return today's date and time
+        var currentTime = new Date();
+        // returns the month (from 0 to 11)
+        var month = currentTime.getMonth() + 1;
+        // returns the day of the month (from 1 to 31)
+        var day = currentTime.getDate();
+
+        // returns the year (four digits)
+        var year = currentTime.getFullYear();
+        var dateReturned = month + "-" + day + "-" + year;
+        return dateReturned;
+    }
+
+    //create a bug on IE when there are no entries : "repeater_field" 
+    // addScript("../../Style library/VQR/repeatable-fields.js" + "?rev=" + getTodayDate());
+    addScript("../Style library/myapp/MIS.ActionRegister.Form.js" + "?rev=" + getTodayDate()); 
+</script>
+
+<script type="text/javascript" src="../Style library/myapp/jquery-3.2.1.min.js"></script>
+<!-- <script type="text/javascript" src="../Style library/myapp/jquery-ui.min.js"></script> -->
+<script type="text/javascript" src="../Style library/myapp/HillbillyTemplate.js"></script>
+
+<div id="mainApp">
+
+</div>
