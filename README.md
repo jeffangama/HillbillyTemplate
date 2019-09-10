@@ -5,7 +5,7 @@
   @category Plugins/HillbillyTemplate
   @author Mark Rackley / http://www.markrackley.net / mrackley@paitgroup.com, editer by Jeff ANGAMA https://twitter/jeffangama
 
- #OBjective 
+ #Objective 
 * Customize new form / edit / view form easily. Add bootstrap, jquery to it.
 * When using that project vs jslink ? When you want to set field value or customize a form to be prettier
 
@@ -17,6 +17,8 @@
  4. Replace the value "myapp" in HillBillyTemplate.html" to your app name, should be the same as your folder name in style library
 
  # Usage: 
+ 
+ Watch the video : https://www.youtube.com/watch?v=vHnXhO0fIoI
     
     There is an example configured in 
      jQuery(document).ready(function($) {
