@@ -1,32 +1,172 @@
 <script type="text/javascript">
-    function addScript(src) {
-        var s = document.createElement('script');
-        s.setAttribute('src', src);
-        document.body.appendChild(s);
-    }
+  function addScript(src) {
+    var s = document.createElement('script');
+    s.setAttribute('src', src);
+    s.type = "text/javascript";
+    s.async = false;
+    document.body.appendChild(s);
+  }
 
-    function getTodayDate() { // Return today's date and time
-        var currentTime = new Date();
-        // returns the month (from 0 to 11)
-        var month = currentTime.getMonth() + 1;
-        // returns the day of the month (from 1 to 31)
-        var day = currentTime.getDate();
+  function getTodayDate() { // Return today's date and time
+    var currentTime = new Date()
+    // returns the month (from 0 to 11)
+    var month = currentTime.getMonth() + 1
+    // returns the day of the month (from 1 to 31)
+    var day = currentTime.getDate()
 
-        // returns the year (four digits)
-        var year = currentTime.getFullYear();
-        var dateReturned = month + "-" + day + "-" + year;
-        return dateReturned;
-    }
+    // returns the year (four digits)
+    var year = currentTime.getFullYear();
+    var dateReturned = month + "-" + day + "-" + year;
+    return dateReturned;
+  } 
 
-    //create a bug on IE when there are no entries : "repeater_field" 
-    // addScript("../../Style library/VQR/repeatable-fields.js" + "?rev=" + getTodayDate());
-    addScript("../Style library/myapp/MIS.ActionRegister.Form.js" + "?rev=" + getTodayDate()); 
+  //create a bug on IE when there are no entries : "repeater_field" 
+  // addScript("../../Style library/myApp/repeatable-fields.js" + "?rev=" + getTodayDate());
+  //always load form.js first as there are common variables
+  
+  addScript("../../Style library/myApp/mis.myapp.Business.CheckoutCheckin.js" + "?rev=" + getTodayDate());
+  addScript("../../Style library/myApp/mis.myapp.Business.OverWriteSP.js" + "?rev=" + getTodayDate());
+  addScript("../../Style library/myApp/mis.myapp.UI.js" + "?rev=" + getTodayDate());
+  addScript("../../Style library/myApp/mis.myapp.Helper.js" + "?rev=" + getTodayDate());
+  addScript("../../Style library/myApp/mis.myapp.Form.js" + "?rev=" + getTodayDate());
+  //always load Helper.js 2nd as there are common methods
+  
+  addScript("../../Style library/myApp/mis.myapp.Business.js" + "?rev=" + getTodayDate());  
+  addScript("../../Style library/myApp/mis.myapp.DAO.js" + "?rev=" + getTodayDate());
+  
+  
 </script>
 
-<script type="text/javascript" src="../Style library/myapp/jquery-3.2.1.min.js"></script>
-<!-- <script type="text/javascript" src="../Style library/myapp/jquery-ui.min.js"></script> -->
-<script type="text/javascript" src="../Style library/myapp/HillbillyTemplate.js"></script>
+<script type="text/javascript" src="../../Style library/myApp/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src=".../../../../Style library/myApp/jquery-ui.min.js"></script>
+<script type="text/javascript" src="../../Style library/myApp/HillbillyTemplate.js"></script>
+<script type="text/javascript" src="../../Style library/myApp/repeatable-fields.js"></script>
+
+<link type="text/css" rel="stylesheet" href="../../Style library/myApp/rhyzz-bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="../../Style library/myApp/rhyzz-bootstrap-theme.min.css" />
+<link type="text/css" rel="stylesheet" href="../../Style library/myApp/mis.myapp.Form.css" />
+<link type="text/css" rel="stylesheet" href="../../Style library/myApp/jquery.ui.autocomplete.css" />
+<link type="text/css" rel="stylesheet" href="../../Style library/myApp/jquery-ui.css" />
 
 <div id="mainApp">
+
+  <div class="rhyzz-bootstrap" id="checkedOutBar" style="display:none">
+    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+      aria-valuemax="100" style="width: 30%; position: fixed; height: 20px; top:64px; right: 0; z-index: 2000">
+      <strong>The form is currently locked to you. Save it or
+        <span id="cancelLock" style="color: yellow; cursor: pointer">Cancel the lock</span>
+      </strong>
+    </div>
+  </div>
+
+  <h1 id="myAppTitleH1"> VENDOR QUALIFICATION REQUEST (myApp)
+    <b>
+      <span id="myAppTitle"></span>
+    </b>
+  </h1>
+
+  <span class="hillbillyFormSave" style="float: right"></span>
+  <span class="hillbillyFormCancel" style="float: right; display:none"></span>
+  <!-- <a href="#projectCorp" id="errorMsg" style="float: right; color: red">Please add at least one product code before being able to save</a> -->
+  <span class="CreatedInformation"></span>
+  <!--<b>(Requestor)</b>-->
+  <br>
+  <span class="ModifiedInformation"></span>
+
+
+  <div id="loadingPopup">
+    <div id="loadingPopupContainer">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <center>Loading... Please wait...</center>
+      <br>
+      <br>
+      <div style="margin: 0 auto;" class="loader"></div>
+    </div>
+  </div>
+
+  <div id="MessageCheckedOut" class="hidden loadingPopup">
+    <div id="loadingPopupContainer">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <center>
+        <div class="rhyzz-bootstrap" id="pageAlreadyCheckedOut">
+          Page already checked out by somebody.
+          <br /> Please wait that the person completes his inputs or ask him to unlock the myApp (information visible in
+          myApp Listing)
+        </div>
+      </center>
+      <br>
+      <br>
+
+    </div>
+  </div>
+
+  <div id="MessageCheckOutAreYouSure" class="hidden loadingPopup">
+    <div id="loadingPopupContainer">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <center>
+        <div class="rhyzz-bootstrap">
+          Are you sure you want to edit this myApp ?
+          <br /> Other people will not be able to edit it until you save and unlock the form.
+          <br /> (Closing the form will keep the myApp locked, please save or unlock the myApp before closing the browser)
+          <br />
+          <br />
+          <input type="button" id="OKButtonCheckOut" value="OK" class="btn btn-success" />&nbsp;
+          <input type="button" id="CancelButtonCheckOut" value="Cancel (View the myApp)" class="btn-default" />
+        </div>
+      </center>
+      <br>
+      <br>
+
+    </div>
+  </div>
+</div>
+<div id="accordion" style="float: left;" class="ui-accordion ui-widget ui-helper-reset">
+
+  <h3 class="ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons ui-accordion-header-collapsed ui-corner-all">1.
+    PACKAGE INFORMATION: (Top 4 sections to be completed by Requestor)</h3>
+  <div class="ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content ui-accordion-content-active">
+    <p>
+      <span class='hillbillyFormDesc' data-internalName='myAppExpiredDate'></span>
+      <span class='hillbillyForm' data-internalName='myAppExpiredDate'></span>
+
+      <span class="hillbillyFormDesc" data-internalName="UniqueID0" style="display:none !important;"></span>
+      <span class="hillbillyForm" data-internalName="UniqueID0" id="UniqueID" style="display:none !important;"></span>
+
+      <span class="hillbillyFormDesc" data-internalName="Title" style="display:none !important;"></span>
+      <span class="hillbillyForm" data-internalName="Title" id="DisplayFormTitle" style="display:none !important;"></span>
+
+      <span class='hillbillyFormDesc' data-internalName='CreatedBy'></span>
+      <span class='hillbillyForm' data-internalName='CreatedBy'></span>
+      <span class='hillbillyFormDesc' data-internalName='Department1'></span>
+      <span class='hillbillyForm' data-internalName='Department1'></span>
+      <span class='hillbillyFormDesc' data-internalName='RegionalCenter1'></span>
+      <span class='hillbillyForm' data-internalName='RegionalCenter1'></span>
+
+      <span class='hillbillyFormDesc' data-internalName='Priority'></span>
+      <span class='hillbillyForm' data-internalName='Priority'></span>
+    </p>
+  </div>
+
 
 </div>
